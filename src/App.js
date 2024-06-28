@@ -1,19 +1,40 @@
 import logo from './logo.svg';
 import './App.css';
-import DictWord from './words.txt';
+import DictFile from './words.txt';
+import { useEffect, useState } from 'react';
 
 function App() {
 
-  const getDict = () => {
-    let dict; 
-    fetch(DictWord)
+  const [dictword, setDictword] = useState([]);
+  const [targetWord, setTargetWord] = useState('aaaaa');
+
+  useEffect(() => {
+    async function dict() {
+      await getDict();
+    }
+    dict()
+  }, []);
+
+  const getDict = async () => {
+    var dict = [];
+    await fetch(DictFile)
     .then(function(response){
       return response.text();
     }).then(function (data) {
       dict = data.split('\n');
     })
-    return dict;
+    setDictword(dict);
+    let i = 0;
+    let rand = Math.floor(Math.random() * dict.length);
+    console.log(rand, '; ', dict.length);
+    for (let word of dict) {
+      if (word.length != 5)
+        return (false);
+      if (i++ == rand)
+        setTargetWord(word);
+    };
   }
+
   const checkWord = (word) => {
     return getDict().find(word);
   }
@@ -21,18 +42,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => {console.log(dictword)}}
         >
-          Learn React
-        </a>
+          get dict
+        </button>
+        <button
+          onClick={() => {console.log(targetWord)}}
+        >
+          get word
+        </button>
       </header>
     </div>
   );
