@@ -7,6 +7,7 @@ function App() {
 
   const [dictword, setDictword] = useState([]);
   const [targetWord, setTargetWord] = useState([]);
+  const [seedOffset, setSeedOffset] = useState(0);
 
   useEffect(() => {
     async function dict() {
@@ -19,31 +20,40 @@ function App() {
   const getRandom = (seed = 0) => {
     console.log('seed: ', seed);
     seed = ((seed * 1103515245 + 12345) & 0x7FFFFFFF);
-    console.log('rand: ', seed / 0x7FFFFFFF);
     return (seed / 0x7FFFFFFF);
   }
 
   const getDict = async () => {
     var dict = [];
+    let i = 0;
+
     await fetch(DictFile)
     .then(function(response){
       return response.text();
     }).then(function (data) {
       dict = data.split('\n');
     })
-    setDictword(dict);
-    let i = 0;
-    const date = new Date();
-    let rand = Math.floor(getRandom((date.getFullYear() ^ ((date.getDate()) << date.getMonth()))) * dict.length);
-    //console.log(rand, '; ', dict.length);
-    for (let word of dict) {
+    for (let word of dictword) {
       if (word.length != 5)
         return (false);
-      if (i++ == rand) {
-        setTargetWord(word.toUpperCase().split(''));
-        console.log(word);
-      }
-    };
+    }
+    setDictword(dict);
+    selectWord(dict = dict);
+  }
+
+  const selectWord = (dict = dictword, offset = 0) => {
+    const date = new Date();
+    let rand = Math.floor(getRandom((date.getFullYear() ^ ((date.getDate() + offset) << date.getMonth()))) * dict.length);
+
+    console.log('rand: ', rand);
+    setTargetWord(dict[rand].toUpperCase().split(''));
+    console.log(dict[rand].toUpperCase());
+    //console.log(rand, '; ', dict.length);
+  }
+
+  const nextWord = () => {
+    setSeedOffset(seedOffset + 1);
+    selectWord(dictword, Math.floor(Math.random() * dictword.length));
   }
 
   const checkWord = (word) => {
@@ -116,7 +126,11 @@ function App() {
           />
         ))}
       </div>
-
+      <button
+        onClick={nextWord}
+      >
+        nextWord
+      </button>
     </div>
   );
 }
