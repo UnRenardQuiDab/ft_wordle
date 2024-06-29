@@ -2,9 +2,7 @@ import './Cell.css';
 
 export default function Cell({letter, state}) {
 
-	// state : 0 trasparent, 1 gris, 2 jaune, 3 vert, 4 case selectionnee
-
-	const getColorBG = () => {
+	const getColorBG = (state) => {
 		if (state === 0)
 			return {
 				backgroundColor: 'transparent',
@@ -40,7 +38,7 @@ export default function Cell({letter, state}) {
 	return (
 		<div
 			className="cell"
-			style={getColorBG()}
+			style={getColorBG(state)}
 		>
 			<p>{letter}</p>
 		</div>

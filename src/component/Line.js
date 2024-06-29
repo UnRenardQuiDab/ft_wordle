@@ -4,22 +4,12 @@ import { useEffect, useState } from 'react';
 
 export default function Line({guess, word, lineState, selected}) {
 
-	const [state, setState] = useState(() => {
-		var tmpState = new Array(5)
-		if (lineState === 0) {
-			return (tmpState.fill(0))
-		}
-		if (lineState === 2) {
-			return (tmpState.fill(3))
-		}
-		if (lineState === 3) {
-			return (tmpState.fill(5))
-		}
-	});
+	const [state, setState] = useState([]);
 
 	useEffect(() => {
+		var tmpState;
 		if (lineState === 1 || lineState === 2) {
-			var tmpState = new Array(5).fill(1);
+			tmpState = new Array(5).fill(1);
 			var tmpWord = [...word];
 			for (let i = 0; i < 5; i++) {
 				if (guess[i] === word[i]) {
@@ -35,6 +25,18 @@ export default function Line({guess, word, lineState, selected}) {
 				}
 			}
 			setState(tmpState);
+		}
+		else {
+			tmpState = new Array(5)
+			if (lineState === 0) {
+				setState(tmpState.fill(0))
+			}
+			else if (lineState === 2) {
+				setState(tmpState.fill(3))
+			}
+			else if (lineState === 3) {
+				setState(tmpState.fill(5))
+			}
 		}
 		
 	}, [guess, word, lineState]);

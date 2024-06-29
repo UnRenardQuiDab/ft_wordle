@@ -14,9 +14,23 @@
 h2{
 	color : whitesmoke;
 	font-size: 3.5vw;
-
+	margin : 1vw;
 }
 
 button{
-	background-color: ;
+	/* width : 33%; */
+	font-size : 1vw;
+	padding : 0.5vw 1vw;
+	border : 1px solid whitesmoke;
+	background-color: transparent;
+	border-radius: 8px;
+	color : whitesmoke;
+	transition: 0.4s;
+}
+
+button:hover{
+	border : 1px solid rgb(31, 31, 31);
+	background-color: whitesmoke;
+	color : rgb(31, 31, 31);
+	transition: 0.4s;
 }
