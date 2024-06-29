@@ -1,0 +1,17 @@
+.cell{
+	width: 3vw;
+	height: 3vw;
+	color : whitesmoke;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2vw;
+	font-weight: 600;
+	border-radius : 8px;
+	margin: 0.5vw;
+}
+
+.line {
+	display : flex;
+	
+}
