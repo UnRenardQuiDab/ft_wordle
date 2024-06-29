@@ -1,8 +1,47 @@
 import './App.css';
+import DictFile from './words.txt';
 import { useEffect, useState } from 'react';
 import Line from './component/Line';
 
 function App() {
+
+  const [dictword, setDictword] = useState([]);
+  const [targetWord, setTargetWord] = useState([]);
+
+  useEffect(() => {
+    async function dict() {
+      await getDict();
+    }
+    console.log('dict');
+    dict()
+  }, []);
+
+  const getDict = async () => {
+    var dict = [];
+    await fetch(DictFile)
+    .then(function(response){
+      return response.text();
+    }).then(function (data) {
+      dict = data.split('\n');
+    })
+    setDictword(dict);
+    let i = 0;
+    let rand = Math.floor(Math.random() * dict.length);
+    //console.log(rand, '; ', dict.length);
+    for (let word of dict) {
+      if (word.length != 5)
+        return (false);
+      if (i++ == rand) {
+        setTargetWord(word.toUpperCase().split(''));
+        console.log(word);
+      }
+    };
+  }
+
+  const checkWord = (word) => {
+    return dictword.find(word);
+  }
+
 
   const [lines, setLines] = useState(new Array(6).fill(null).map(() => ({
     guess: [],
@@ -10,7 +49,6 @@ function App() {
   })));
 
   const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-  const word = 'HELLO'.split('');
 
   const addChar = (key) => {
     let newLines = [...lines];
@@ -64,7 +102,7 @@ function App() {
           <Line
             key={index}
             guess={line.guess}
-            word={word}
+            word={targetWord}
             lineState={line.state}
             selected={index === lines.findIndex((l) => l.state === 0)}
           />
