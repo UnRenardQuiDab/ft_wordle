@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import Line from './component/Line';
 import Popup from './component/Popup';
+import Keyboard from './component/Keyboard';
 
 function App() {
 
@@ -142,30 +143,37 @@ function App() {
     )
   return (
     <div className="App">
-      <div className='grid'>
-        {lines.map((line, index) => (
-          <Line
-            key={index}
-            guess={line.guess}
-            word={targetWord}
-            lineState={line.state}
-            selected={index === lines.findIndex((l) => l.state === 0) && !lines.find((l) => l.state === 2)}
-          />
-        ))}
+      <h1 className='title'>FT_WORDLE</h1>
+      <div className='row'>
+        <div className='grid'>
+          {lines.map((line, index) => (
+            <Line
+              key={index}
+              guess={line.guess}
+              word={targetWord}
+              lineState={line.state}
+              selected={index === lines.findIndex((l) => l.state === 0) && !lines.find((l) => l.state === 2)}
+            />
+          ))}
+          {
+            lines.find(line => line.guess.length === 5 && !checkWord(line.guess)) &&
+            <p className='error'>Word not in dictionnary</p>
+          }
+        </div>
         {
-          lines.find(line => line.guess.length === 5 && !checkWord(line.guess)) &&
-          <p className='error'>Word not in dictionnary</p>
+        (lines.find(line => line.state === 2) || !lines.find(line => line.state === 0)) &&
+          <Popup
+            guess={targetWord}
+            word={targetWord}
+            isWin={lines.find(line => line.state === 2)}
+            onClick={nextWord}
+          />
         }
       </div>
-      {
-       (lines.find(line => line.state === 2) || !lines.find(line => line.state === 0)) &&
-        <Popup
-          guess={targetWord}
-          word={targetWord}
-          isWin={lines.find(line => line.state === 2)}
-          onClick={nextWord}
-        />
-      }
+      <Keyboard
+        lines={lines.filter(l => l.state > 0)}
+        word={targetWord}
+      />
     </div>
   );
 }
