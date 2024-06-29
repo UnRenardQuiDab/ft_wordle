@@ -25,6 +25,11 @@ export default function Cell({letter, state}) {
 				backgroundColor: 'rgb(41, 163, 41)',
 				border: '4px solid rgb(41, 163, 41)',
 			};
+		else if (state === 4)
+			return {
+				backgroundColor: 'transparent',
+				border: '4px solid #AFB3FF',
+			};
 	}
 
 	return (

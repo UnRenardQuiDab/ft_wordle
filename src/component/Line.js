@@ -2,43 +2,43 @@ import './Cell.css'
 import Cell from './Cell';
 import { useEffect, useState } from 'react';
 
-export default function Line({guess, word}) {
+export default function Line({guess, word, lineState, selected}) {
 
 	const [state, setState] = useState(new Array(5).fill(0));
-	console.log(guess);
-	
+
 	useEffect(() => {
-		let tmpState = new Array(5).fill(0);
-		let tmpWord = word.toUpperCase().split('');
+		if (lineState === 0) return;
+		var tmpState = new Array(5).fill(1);
+		var tmpWord = [...word];
 		for (let i = 0; i < 5; i++) {
 			if (guess[i] === word[i]) {
 				tmpState[i] = 3;
-				tmpWord[i] = '';
+				tmpWord[i] = null;
 			}
 		}
 		for (let i = 0; i < 5; i++) {
-			console.log(tmpState);
 			console.log(tmpWord);
 			var index = tmpWord.indexOf(guess[i]);
-			console.log(index);
-			if (tmpState[i] === 0 && index >= 0) {
-				console.log(i);
+			if (tmpState[i] === 1 && index >= 0) {
 				tmpState[i] = 2;
-				tmpWord[index] = '';
+				tmpWord[index] = null;
 			}
 		}
 		setState(tmpState);
-	}, [guess, word]);
+	}, [guess, word, lineState]);
+
+
 	
 	return (
-		<div
-			className="line"
-		>
-			{guess.toUpperCase().split("").map((l, i) => {
+		<div className="line">
+			{guess.map((l, i) => {
 				return (
 					<Cell key={i} letter={l} state={state[i]} />
 				)
 			})}
+			{new Array(5 - guess.length).fill(null).map((_, i) => (
+				<Cell key={i + guess.length} letter={' '} state={i === 0 && selected ? 4 : 0} />
+			))}
 		</div>
 	);
   }
