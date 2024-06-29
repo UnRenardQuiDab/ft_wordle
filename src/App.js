@@ -16,6 +16,13 @@ function App() {
     dict()
   }, []);
 
+  const getRandom = (seed = 0) => {
+    console.log('seed: ', seed);
+    seed = ((seed * 1103515245 + 12345) & 0x7FFFFFFF);
+    console.log('rand: ', seed / 0x7FFFFFFF);
+    return (seed / 0x7FFFFFFF);
+  }
+
   const getDict = async () => {
     var dict = [];
     await fetch(DictFile)
@@ -26,7 +33,8 @@ function App() {
     })
     setDictword(dict);
     let i = 0;
-    let rand = Math.floor(Math.random() * dict.length);
+    const date = new Date();
+    let rand = Math.floor(getRandom((date.getFullYear() ^ ((date.getDate()) << date.getMonth()))) * dict.length);
     //console.log(rand, '; ', dict.length);
     for (let word of dict) {
       if (word.length != 5)
