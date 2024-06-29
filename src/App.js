@@ -2,6 +2,7 @@ import './App.css';
 import DictFile from './words.txt';
 import { useEffect, useState } from 'react';
 import Line from './component/Line';
+import Popup from './component/Popup';
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
   }
 
   const handleKeyDown = (event) => {
+    if (lines.find(line => line.state === 2)) return;
     if (charset.includes(event.key)) {
       addChar(event.key)
     } else if (event.keyCode === 8) {
@@ -79,20 +81,32 @@ function App() {
   }
 
   useEffect(() => {
+    if (targetWord.length === 0) return;
     document.addEventListener('keydown', handleKeyDown, true);
     return () => {
         document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [targetWord]);
+
+  const arrayCompare = (a, b) => {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
 
   const valideLine = () => {
     let newLines = [...lines];
     var line = newLines.find(line => line.state === 0);
-    if (line && line.guess.length === 5) {
+    if (line && arrayCompare(line.guess, targetWord)) {
+      line.state = 2;
+    } 
+    else if (line && line.guess.length === 5) {
       line.state = 1;
     }
-    console.log(newLines);
     setLines(newLines);
+    console.log(newLines);
   }
 
   return (
@@ -104,11 +118,18 @@ function App() {
             guess={line.guess}
             word={targetWord}
             lineState={line.state}
-            selected={index === lines.findIndex((l) => l.state === 0)}
+            selected={index === lines.findIndex((l) => l.state === 0) && !lines.find((l) => l.state === 2)}
           />
         ))}
       </div>
-
+      {
+       (lines.find(line => line.state === 2) || !lines.find(line => line.state === 0)) &&
+        <Popup
+          guess={targetWord}
+          word={targetWord}
+          isWin={lines.find(line => line.state === 2)}
+        />
+      }
     </div>
   );
 }

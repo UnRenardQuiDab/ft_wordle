@@ -1,0 +1,22 @@
+.popup {
+	width: calc(23vw + 40px);
+	height: calc(23vw + 48px);
+	border-radius : 8px;
+	background-color: #737373;
+	display : flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	margin : 0.5vw;
+
+}
+
+h2{
+	color : whitesmoke;
+	font-size: 3.5vw;
+
+}
+
+button{
+	background-color: ;
+}

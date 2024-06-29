@@ -2,34 +2,39 @@ import './Cell.css';
 
 export default function Cell({letter, state}) {
 
-	// state : 0 trasparent, 1 gris, 2 jaune, 3 vert
+	// state : 0 trasparent, 1 gris, 2 jaune, 3 vert, 4 case selectionnee
 
 	const getColorBG = () => {
 		if (state === 0)
 			return {
 				backgroundColor: 'transparent',
-				border: '4px solid rgb(115, 115, 115)'
+				border: '4px solid #737373'
 			};
 		else if (state === 1)
 			return {
-				backgroundColor: 'rgb(115, 115, 115)',
-				border: '4px solid rgb(115, 115, 115)'
+				backgroundColor: '#737373',
+				border: '4px solid #737373'
 			}; 
 		else if (state === 2)
 			return {
-				backgroundColor: 'rgb(230, 138, 0)',
-				border : '4px solid rgb(230, 138, 0)',
+				backgroundColor: '#d2b334',
+				border : '4px solid #d2b334',
 			};
 		else if (state === 3)
 			return {
-				backgroundColor: 'rgb(41, 163, 41)',
-				border: '4px solid rgb(41, 163, 41)',
+				backgroundColor: '#29a329',
+				border: '4px solid #29a329',
 			};
 		else if (state === 4)
 			return {
 				backgroundColor: 'transparent',
 				border: '4px solid #AFB3FF',
 			};
+		else if (state === 5)
+			return {
+				backgroundColor: '#c71d1d',
+				border : '4px solid #c71d1d'
+		}
 	}
 
 	return (
