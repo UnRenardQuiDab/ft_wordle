@@ -28,7 +28,8 @@ export default function Keyboard({lines, word}) {
 			if (line.guess.includes(l))
 				return {
 					backgroundColor: '#3D3D3D',
-					border: '4px solid #3D3D3D'
+					border: '4px solid #3D3D3D',
+					color: 'gray'
 				}
 		}
 
